@@ -1,1 +1,6 @@
 01_intro_ML/assi_solution/
+*.aux
+*.fls
+*.log
+*.synctex.gz
+*.fdb_latexmk

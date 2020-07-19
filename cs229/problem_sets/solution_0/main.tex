@@ -1,0 +1,189 @@
+\documentclass[12pt]{article} \usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx,subcaption}
+\usepackage{algorithm}
+\usepackage[round]{natbib}
+\usepackage{tikz-cd}
+
+
+\usepackage[most]{tcolorbox}
+\newtcolorbox[]{solution}[1][]{%
+    breakable,
+    enhanced,
+    colback=white,
+    title=Solution,
+    #1
+}
+\usepackage{xcolor} %hilight
+\newcommand{\hilight}[1]{\colorbox{yellow}{#1}}
+%% ---------------------------------
+%\begin{solution}
+%\hilight{TODO}
+%\end{solution}
+%% ---------------------------------
+
+
+
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+
+\newcommand*\circled[1]{
+\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=1pt] (char) {#1};}
+}
+            
+ 
+% xun
+\newcommand{\Gcal}{\mathcal{G}}
+\newcommand{\Ical}{\mathcal{I}}
+\newcommand{\Hcal}{\mathcal{H}}
+\newcommand{\Ucal}{\mathcal{U}}
+\newcommand{\Tcal}{\mathcal{T}}
+\newcommand{\Ncal}{\mathcal{N}}
+\newcommand{\Xcal}{\mathcal{X}}
+\newcommand{\Cbs}{\boldsymbol{C}}
+\newcommand{\Sbs}{\boldsymbol{S}}
+\newcommand{\Pa}{\text{Pa}}
+\newcommand{\De}{\text{De}}
+\newcommand{\Nd}{\text{Nd}}
+            
+
+\title{CS229 Machine Learning (summer 2020): Problem Set 0
+{\color{red} v1.1}
+}
+\author{
+\begin{tabular}{rl}
+Andrew ID: & Moroccan Student\\
+Name: & [Belcaid Anass] \\
+Collaborators: & [Working alone]
+\end{tabular}
+}
+\date{\today}
+
+
+\begin{document}
+
+\maketitle
+
+
+
+\section{Gradient and Hessians [0 points]}
+\begin{enumerate}
+  \item Let $f(x) = \frac{1}{2} x^TAx + b^Tx$, where $A$ is a
+    symmetric matrix and $b\in\mathbb{R}^n$ is a vector. What is $\nabla
+    f(x)$?
+    \begin{solution}
+      \begin{equation}
+      \nabla f(x) = A x + b 
+    \end{equation}
+    \end{solution}
+  \item Let $f(x) = g(h(x))$, where $g: \mathbb{R}\rightarrow \mathbb{R}$ is
+    differentiable and $h\;:\: \mathbb{R}^n\rightarrow \mathbb{R}$ is
+    differentiable. What is $\nabla f(x)$?
+    \begin{solution}
+      \begin{equation}
+      \nabla f(x) = \dfrac{\partial g(h(x))}{\partial h(x)} \dfrac{\partial h(x)}{\partial x} 
+      = g'(x)\nabla h(x)
+    \end{equation}
+    \end{solution}
+  \item 
+  \item Let $f(x) = \frac{1}{2} x^TAx + b^Tx$, where $A$ is a
+    symmetric matrix and $b\in\mathbb{R}^n$ is a vector. What is $\nabla^2f(x)$?
+    \begin{solution}
+      \begin{equation}
+      \nabla^2(f(x)) = A
+    \end{equation}
+    \end{solution}
+  \item Let $f(x) = g(a^Tx)$, where $g:\mathbb{R}\rightarrow \mathbb{R}$ is
+    continuously differentiable and $a\in \mathbb{R}^n$ is a vector. What  is $\nabla f(x)$ and $\nabla^2(f(x))$?
+    \begin{solution}
+      \begin{equation}
+      \nabla g(x)  = \dfrac{\partial g(x)}{\partial a^Tx} \dfrac{\partial a^T x
+      }{\partial x} = g^{'}(a^Tx) a
+    \end{equation}
+
+    \begin{equation}
+      \nabla^2(g(x))_{(i,j)} = g^{''}(a^Tx) a_i a_j
+    \end{equation}
+    \end{solution}
+\end{enumerate}
+
+\section{Positive definite matrices [0 Points]}%
+
+\begin{itemize}
+  \item Let $z\in\mathbb{R}^n$. Show that $A=zz^T$ is positive semidefinite.
+    \begin{solution}
+      Let $x \in \mathbb{R}^n$,
+      \begin{eqnarray*}
+        x^T A x & = & x^Tzz^T x \\
+                & = & (z^Tx)^T (z^Tx)\\
+                & = & \Vert z^Tx \Vert \geq 0
+      \end{eqnarray*}
+    Which prove that $A$ is \textbf{SPD}.
+    \end{solution}
+
+  \item Let $A=zz^T$, what is the null space of $A$? What is the rank of $A$?
+    \begin{solution}
+      The null space $\Ncal(A)$ is given by:
+
+      \begin{eqnarray}
+        \Ncal(A)&=&\left\{ x\in \mathbb{R}^n \;|\; (zz^T)x = 0 \right\}\\
+                &=& \left\{ x\in \mathbb{R}^n\;|\; \sum_{i=1}^n x_i
+                z_i=0\right\}\\
+                &=& z^{\perp}\\
+      \end{eqnarray}
+
+      The rank of $A$ is  $n$ - the number of \textbf{non null} elements in $z$.
+    \end{solution}
+
+  \item Let $A\in\mathbb{R}^{n,n}$ be a semidefinite matrix and
+    $B\in\mathbb{R}^{m,n}$ be an arbitrary matrix. Is $BAB^T$ \textbf{PSD}?
+    \begin{solution}
+      For any $x\in \mathbb{R}^{m}$, let compute the:
+
+      \begin{equation}
+        x^TBAB^Tx  &= & (B^Tx)^T A (B^Tx) \geq 0\\
+      \end{equation}
+      Since $A$ is \textbf{PSD}, 
+
+    \end{solution}
+\end{itemize}
+
+\section{Eigen vectors and Eigen values}%
+
+\begin{itemize}
+  \item Suppose $A\in\mathbb{R}^{n,n}$ is diagonalizable, that is, $A=TDT^{-1}$
+    for an invertible matrix $T$. Show that $At^{(i)}= \lambda_i t^{(i)}$.
+
+    \begin{solution}
+    \begin{eqnarray}
+      At^{(i)}  &=& TDT^{-1} t^{(i)}\\
+                &=& TD (T^T t^{(i)})\\ 
+                &=& TD \begin{pmatrix} \ldots & 1 & \ldots \end{pmatrix}^T\\
+                &= & T \begin{pmatrix} \ldots & \lambda_i & \ldots
+                \end{pmatrix}^T\\
+                & = & \lambda_i t^{(i)}
+    \end{eqnarray}  
+    \end{solution}
+  \item Two simple equations on digitalization.
+\end{itemize}
+
+\section{Probability and multivariate Gaussian}%
+\label{sec:probability_and_multivariate_gaussian}
+
+Let $X=(X_1,\ldots, X_n)$  is sampled from a \emph{multivariate Gaussian}
+distribution with mean $\mu$ and covariance $\Sigma\in S^n_+$.
+
+\begin{itemize}
+  \item Describe the random variable $Y=X_1 + X_2 + \ldots + X_n$. What is the
+    mean and variance?
+\end{itemize}
+
+\bibliography{pgm}
+\bibliographystyle{abbrvnat}
+
+
+\end{document}
