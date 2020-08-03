@@ -1,0 +1,18 @@
+\begin{answer}
+
+ \begin{eqnarray}
+   \nabla_{\theta_j} J(\theta) &=& -\dfrac{1}{n} \sum_{i=1}^n
+   \big[ y_i - h_\theta(x^i)\big]x_j^i\\
+   \nabla_{\theta_j,\theta_k}^2 J(\theta) & = & \dfrac{1}{n} \sum_{i=1}^n
+   g(\theta^TX^i)(1-g(\theta^TX^i))x_jx\\
+   H &=& X^T D X
+ \end{eqnarray} 
+
+ Where $D$ is a diagonal matrix containing the derivative of each sample
+ $D_{ii} = g(\theta^TX^i)(1- g(\theta^T X^i))$. Since the elements
+ $D_{ii}$ are positive. The matrix $D$ is SPD. Hence for any arbitrary
+ matrix $X$, we get that $X^TDX$ is \textbf{SPD}.\\
+
+ This proves that the Hessian is \textbf{SPD}. Hence, the
+ functional $J$ is convex and has a unique minimizer.
+\end{answer}
